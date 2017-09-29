@@ -8,4 +8,4 @@
 
 Таблицу можно сортировать по любому из параметров. Можно будет выбрать любую запись и проимпортировать в свое сообщество. Внизу таблицы будет постраничная навигация.
 
-![Прототип](img/screen.jpg "Парсер Vk")
+![Прототип](https://raw.githubusercontent.com/AlexandrMesh/DiplomProject/DiploProject/img/screen.png "Парсер Vk")
