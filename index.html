@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parser VK</title>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="wrapper">
+<!-- component template -->
+<script type="text/x-template" id="grid-template">
+
+  <table class="table_content">
+    <thead>
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key }">
+          {{ key | capitalize }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+        </th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr v-for="entry in filteredData">
+        <td v-for="key in columns">
+
+          <img v-if="key == 'media'" v-bind:src="entry[key]" v-on:click="fullimg(entry[key])" width="150">
+
+          {{ (key != 'media') ? entry[key] : '' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</script>
+
+<div class="container">
+  <div class="circular-container">
+    <div class="circle circular-loader1">
+      <div class="circle circular-loader2"></div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- demo root element -->
+<div id="demo">
+  <div class="popup_wrapper hidden">
+  <div class="popup_wrapper_inner">
+    <div class="popup_exit"  v-on:click="popup_exit()">+</div>
+    <div class="popup">
+      <img class="popup_img">
+    </div>
+  </div>
+</div>
+  <form id="searchgroup">
+    <span class="label">Ссылка сообщества</span> <input name="query2" placeholder="manacost" v-model.trim="searchGroup">
+    <span class="label">Количество постов</span>
+    <select v-model="selecteds">
+      <option disabled value="">Выбрать</option>
+      <option value="10" >10</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+    <span v-on:click='fetchData()' class="button_search">Поиск</span>
+  </form>
+  <form id="search">
+    <span class="label">Поиск в таблице</span> <input name="query" placeholder="Фильм про любовь" v-model="searchQuery">
+  </form>
+  <demo-grid
+    :data="gridData"
+    :columns="gridColumns"
+    :filter-key="searchQuery">
+  </demo-grid>
+</div>
+</div>
+<script src="js/index.js"></script>
+</body>
+</html>
