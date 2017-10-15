@@ -84,7 +84,11 @@ var demo = new Vue({
       
     },
     fetchData: function () {
-      var apidomain = this.searchGroup;
+      
+      var url = this.searchGroup;
+      var routeUrl = url.split('/');
+      routeUrl.shift();
+      var apidomain = routeUrl[routeUrl.length-1];
       var apicount = this.selecteds;
       var apiURL = 'https://api.vk.com/method/wall.get?domain=' + apidomain + '&count=' + apicount + '&access_token=5b1ef2785b1ef2785b1ef278bc5b43038e55b1e5b1ef2780285f95f22a70e323207a0ec&v=V'
       var c = [];
@@ -93,6 +97,23 @@ var demo = new Vue({
             url: 'https://api.vk.com/method/groups.getById?group_ids=' + apidomain + '&access_token=5b1ef2785b1ef2785b1ef278bc5b43038e55b1e5b1ef2780285f95f22a70e323207a0ec&v=V', 
             dataType: 'jsonp', 
             success: function(result2){
+
+              
+                    $('.table_content').hide();
+                    $('#search').hide();
+                    var d = result2;
+                    if (!result2.error) {
+                      $('.table_content').show();
+                      $('#search').show();
+                    }
+
+                    $('.error').remove();
+                    if (result2.error) {
+                      $('.container').hide();
+                      $('.table_content').after('<div class="error">Ошибка! Попробуйте изменить параметры поиска!</div>');
+                      return;
+                    }
+
               $('.group_info').remove();
               $('#search').before('<div class="group_info"><div class="group_ava"><img src="' + result2.response[0].photo_medium + '"></div><div class="group_name">' + result2.response[0].name + '</div></div>');
               
@@ -100,7 +121,6 @@ var demo = new Vue({
                 url: apiURL, 
                 dataType: 'jsonp', 
                 success: function(result){
-                    
                     $('.container').hide();
                     $('.table_content').hide();
                     $('#search').hide();
@@ -115,6 +135,7 @@ var demo = new Vue({
                       $('.table_content').after('<div class="error">Ошибка! Попробуйте изменить параметры поиска!</div>');
                       return;
                     }
+                    
                     var response_photo
                     
                     for (var i = 1; i < d.response.length; i++) {
